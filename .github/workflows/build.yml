@@ -1,0 +1,14 @@
+name: Godot Test
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: chickensoft-games/setup-godot@v1
+        with:
+          version: 4.3.0
+          use-dotnet: false
+          include-templates: true
+      - name: Run Tests
+        run: godot --headless --path . -s res://tests/run_tests.gd
