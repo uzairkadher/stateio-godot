@@ -20,14 +20,20 @@ jobs:
         with:
           version: 4.3.0
           use-dotnet: false
-      - name: Setup export templates
+      - name: Install export templates
         run: |
+          mkdir -p ~/.local/share/godot/export_templates/
+          wget -q https://github.com/godotengine/godot/releases/download/4.3-stable/Godot_v4.3-stable_export_templates.tpz -O /tmp/templates.tpz
+          unzip -q /tmp/templates.tpz -d /tmp/
+          mkdir -p ~/.local/share/godot/export_templates/4.3.stable
           mkdir -p ~/.local/share/godot/export_templates/4.3.0.stable
-          cp -r ~/.local/share/godot/templates/4.3.0.stable/* ~/.local/share/godot/export_templates/4.3.0.stable/ || echo "templates setup"
+          cp /tmp/templates/* ~/.local/share/godot/export_templates/4.3.stable/
+          cp /tmp/templates/* ~/.local/share/godot/export_templates/4.3.0.stable/
+          ls ~/.local/share/godot/export_templates/4.3.stable/
       - name: Build APK
         run: |
           mkdir -p build
-          godot --headless --export-debug "Android" ./build/stateio.apk || godot --headless --export-release "Android" ./build/stateio.apk
+          godot --headless --export-debug "Android" ./build/stateio.apk
           ls -lh build/
       - uses: actions/upload-artifact@v4
         with:
