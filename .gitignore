@@ -1,0 +1,7 @@
+.godot/
+*.translation
+export_presets.cfg
+*.apk
+*.aab
+*.keystore
+.DS_Store
