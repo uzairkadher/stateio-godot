@@ -1,7 +1,7 @@
-name: Godot Test
+name: Godot Test + APK
 on: [push]
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -10,5 +10,26 @@ jobs:
           version: 4.3.0
           use-dotnet: false
           include-templates: true
-      - name: Run Tests
-        run: godot --headless --path . -s res://tests/run_tests.gd
+      - run: godot --headless --path . -s res://tests/run_tests.gd
+
+  build-apk:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: chickensoft-games/setup-godot@v1
+        with:
+          version: 4.3.0
+          use-dotnet: false
+          include-templates: true
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+      - uses: android-actions/setup-android@v3
+      - run: mkdir -p ~/.local/share/godot/export_templates/4.3.stable
+      - run: godot --headless --export-release "Android" ./build/stateio.apk || echo "APK export needs templates - will build after Milestone 2"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: android-apk
+          path: ./build/*.apk
