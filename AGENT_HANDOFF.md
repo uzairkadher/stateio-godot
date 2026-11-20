@@ -1,37 +1,34 @@
-# AI Coding Agent Handoff & File Ownership Rules
+# Agent Handoff Guide — Frontier Command
 
-## 1. Locked Core Contracts (`src/core/`)
-`src/core/` is **LOCKED** as of Milestone 1. Downstream agents (Milestones 2–10) may **import** from `src/core/` using `preload("res://src/core/...")`, but **must not** modify any file in `src/core/` without a dedicated contract-change PR reviewed before other agents rebase.
+## Architecture (Four-Layer Decoupled Design)
+1. **Layer 0 (`src/core/`):** Locked data contracts (`GameEnums`, `EventBus`, `SendCommand`, `BuildingState`, `TroopGroupState`, `SpecialMechanicState`, `MatchState`, `SimSnapshot`, `GameStateManager`). Zero `Node` or rendering dependencies.
+2. **Layer 1 (`src/sim/`, `src/ai/`, `src/map/`):** Headless deterministic simulation, utility Bot AI, JSON `MapLoader`, and `AStarGrid2D` `PathCache`. Must never import `Node2D`, `Control`, `CanvasItem`, `src/view/`, or `src/ui/`.
+3. **Layer 2 (`src/view/`, `src/ui/`):** Presentation, touch/mouse input, procedural vector rendering, HUD, and menus. Reads `SimSnapshot` and submits `SendCommand` only.
+4. **Layer 3 (`src/services/`, `data/`, `tests/`):** `SaveManager`, `AudioManager`, tunable JSON configs, and headless tests.
 
-### Locked Contract Files
-- `src/core/enums.gd` — Canonical enums (`FactionId`, `GameState`, `StageState`, `ObjectiveType`, `ObjectiveOutcome`, `StatType`, `StatOp`, `BuildingSpecialType`, `CommandType`)
-- `src/core/event_bus.gd` — Pure `RefCounted` cross-layer pub/sub signals
-- `src/core/game_state_manager.gd` — Strict match lifecycle FSM
-- `src/core/match_state.gd` — Pure simulation data (`MatchState`, `BuildingState`, `TroopGroup`, `FighterUnit`)
-- `src/core/send_command.gd` — Unified command struct emitted by both Player Input and Bot AI
-- `src/core/sim_snapshot.gd` — Read-only deep-copied snapshot for AI and HUD
-- `src/core/config_loader.gd` — JSON config loader & validator
+## File Ownership Boundaries (Multi-Agent Safe)
+- **Core / Integrator:** `project.godot`, `src/core/*`, `scenes/main.tscn`, `src/ui/app_router.gd`
+- **Simulation Agent:** `src/sim/*`
+- **Map & Data Agent:** `src/map/*`, `data/*`
+- **AI Agent:** `src/ai/*`
+- **View & UI Agent:** `src/view/*`, `src/ui/*`, `scenes/*`, `src/services/*`
+- **QA Agent:** `tests/*`, `tools/*`
 
-## 2. Strict Directory Ownership Boundaries
-| Agent | Owned Directories | Forbidden Directories |
-| :--- | :--- | :--- |
-| **Agent A (Simulation)** | `src/sim/` | `src/view/`, `src/ui/`, `scenes/`, `src/ai/` |
-| **Agent B (Map & Data)** | `src/map/`, `src/persistence/`, `data/` | `src/sim/`, `src/view/`, `src/ai/` |
-| **Agent C (Bot AI)** | `src/ai/` | `src/sim/`, `src/view/`, `src/ui/`, `scenes/` |
-| **Agent D (View & UI)** | `src/view/`, `src/ui/`, `scenes/`, `assets/` | `src/sim/`, `src/ai/`, `src/map/` |
-| **Agent E (QA & Build)** | `tests/` | Direct production edits without PR |
+## Core Contracts (Single Source of Truth)
+- **Single-authority mutations:** Only `OwnershipSystem` mutates `owner_id`; only `PopulationSystem` mutates `population`; only `TroopSendSystem` validates and executes `SendCommand`.
+- **Unified command path:** Both `InputController` and `BotController` construct `SendCommand` and submit via `SimulationEngine.submit_command(cmd)`.
 
-## 3. Architectural Purity Rules
-1. **No Godot Nodes in `src/core/` or `src/sim/`**: Every simulation class must extend `RefCounted` so `godot --headless --path . -s res://tests/run_tests.gd` executes without a graphics context.
-2. **Single-Authority Mutations**:
-   - Only `OwnershipSystem` (M3) may change `BuildingState.owner`.
-   - Only `PopulationSystem` (M3) may change `BuildingState.population`.
-   - Only `TroopSendSystem` (M4) may consume `SendCommand` and create `TroopGroup`s.
-3. **Read-Only AI & UI**: `src/ai/` and `src/ui/` must consume `SimSnapshot` + `EventBus` signals; they must never mutate `MatchState` directly.
-4. **Preload Discipline**: Always use explicit `const X = preload("res://...")` in addition to `class_name` so headless CLI tests work on fresh checkouts without a pre-built `.godot/` cache.
+## Completed vs. Incomplete Systems
+- **Completed (Source-Level, Engine-UNVERIFIED):** M1–M9 (all core contracts, 5 maps, population, troop sending/bursts, A* movement, mid-air clash, combat/capture, 3-preset Utility AI, match loop/restart, 8 special mechanics, menus/HUD/touch/audio/save, 11 headless test suites, static validator).
+- **Incomplete / Deferred (M10):** Desktop Godot 4.3 import/parse verification, running `tests/test_runner.gd` in Godot, profiling 250+ troops, Android export preset & APK build, OPPO Reno6 Pro device test.
 
-## 4. Merge & Completion Reporting Protocol
-Before reporting any milestone complete, an agent must:
-1. Work on a dedicated feature branch (e.g., `feat/m2-map-loader`).
-2. List every added/modified file and confirm zero edits outside its owned directory.
-3. Run `godot --headless --path . -s res://tests/run_tests.gd` and attach the raw exit code and output.
+## Known Risks / Potential First-Import Fixes
+1. `test_runner.gd` relies on global `class_name` registration; run `godot --headless --path . --import` once before running `tests/test_runner.gd`.
+2. Verify `InputEventScreenTouch` + `emulate_touch_from_mouse=true` does not double-fire on Android (in `src/view/input_controller.gd`, guard mouse events when running on touchscreens if double-triggers appear on device).
+3. Verify `AudioStreamWAV` looping for `assets/audio/ambient_loop.wav` in Godot 4.3 import settings (`edit/loop_mode=1`).
+
+## Instructions for the Next Coding Agent
+1. Read `IMPLEMENTATION_STATUS.md` and `DESKTOP_HANDOFF.md`.
+2. Run `python3 tools/static_validator.py` before and after any edits.
+3. Preserve zero-Node boundaries in `src/core/`, `src/sim/`, `src/ai/`, and `src/map/`.
+4. When receiving Godot 4.3 parse/runtime logs from the user's PC, fix reported line-level errors without breaking contract signatures, then re-run `tests/test_runner.gd`.

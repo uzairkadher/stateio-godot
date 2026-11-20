@@ -1,0 +1,59 @@
+{
+  "_metadata": {
+    "schema_version": 1,
+    "note": "Three configurable utility AI presets. Bots emit identical SendCommand structs as players."
+  },
+  "presets": {
+    "easy": {
+      "display_name": "Easy",
+      "decision_interval_sec": 1.35,
+      "reaction_delay_sec": 1.1,
+      "command_cooldown_sec": 1.2,
+      "min_attack_surplus": 6,
+      "min_garrison_keep": 6,
+      "send_ratio_attack": 0.5,
+      "send_ratio_defend": 0.5,
+      "send_ratio_expand": 0.5,
+      "aggression_weight": 0.75,
+      "defense_weight": 1.1,
+      "expand_weight": 1.2,
+      "reinforce_weight": 0.65,
+      "idle_timeout_sec": 6.0,
+      "max_commands_per_tick": 1
+    },
+    "normal": {
+      "display_name": "Normal",
+      "decision_interval_sec": 0.8,
+      "reaction_delay_sec": 0.6,
+      "command_cooldown_sec": 0.7,
+      "min_attack_surplus": 4,
+      "min_garrison_keep": 4,
+      "send_ratio_attack": 0.75,
+      "send_ratio_defend": 0.75,
+      "send_ratio_expand": 0.65,
+      "aggression_weight": 1.05,
+      "defense_weight": 1.35,
+      "expand_weight": 1.25,
+      "reinforce_weight": 0.85,
+      "idle_timeout_sec": 4.5,
+      "max_commands_per_tick": 2
+    },
+    "hard": {
+      "display_name": "Hard",
+      "decision_interval_sec": 0.45,
+      "reaction_delay_sec": 0.3,
+      "command_cooldown_sec": 0.4,
+      "min_attack_surplus": 2,
+      "min_garrison_keep": 2,
+      "send_ratio_attack": 1.0,
+      "send_ratio_defend": 0.85,
+      "send_ratio_expand": 0.75,
+      "aggression_weight": 1.35,
+      "defense_weight": 1.55,
+      "expand_weight": 1.3,
+      "reinforce_weight": 1.05,
+      "idle_timeout_sec": 3.0,
+      "max_commands_per_tick": 3
+    }
+  }
+}

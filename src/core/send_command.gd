@@ -1,39 +1,47 @@
 class_name SendCommand
 extends RefCounted
-## Unified troop-dispatch command emitted identically by Player Input and Bot AI.
-## Pure RefCounted — zero Godot Node or UI dependencies.
+## Unified immutable command contract emitted identically by InputController (player)
+## and BotController (AI). Bots cannot bypass validation or wave limits.
 
-const Enums = preload("res://src/core/enums.gd")
-
-var faction: int = Enums.FactionId.NEUTRAL
-var source_ids: PackedInt32Array = PackedInt32Array()
-var target_id: int = -1
-var send_fraction: float = 1.0
-var issued_tick: int = 0
+var command_id: String = ""
+var owner_id: int = GameEnums.OwnerId.NEUTRAL
+var source_ids: Array[String] = []
+var target_id: String = ""
+var send_ratio: float = 1.0
+var issued_at_time: float = 0.0
 
 func _init(
-	p_faction: int = Enums.FactionId.NEUTRAL,
-	p_source_ids: PackedInt32Array = PackedInt32Array(),
-	p_target_id: int = -1,
-	p_send_fraction: float = 1.0,
-	p_issued_tick: int = 0
+	p_owner_id: int = GameEnums.OwnerId.NEUTRAL,
+	p_source_ids: Array[String] = [],
+	p_target_id: String = "",
+	p_send_ratio: float = 1.0,
+	p_command_id: String = "",
+	p_issued_at: float = 0.0
 ) -> void:
-	faction = p_faction
+	owner_id = p_owner_id
 	source_ids = p_source_ids.duplicate()
 	target_id = p_target_id
-	send_fraction = clampf(p_send_fraction, 0.0, 1.0)
-	issued_tick = p_issued_tick
+	send_ratio = clampf(p_send_ratio, 0.0, 1.0)
+	command_id = p_command_id
+	issued_at_time = p_issued_at
 
-func is_valid() -> bool:
-	if faction == Enums.FactionId.NEUTRAL:
+func is_structurally_valid() -> bool:
+	if owner_id == GameEnums.OwnerId.NEUTRAL:
+		return false
+	if target_id.is_empty():
 		return false
 	if source_ids.is_empty():
 		return false
-	if target_id < 0:
+	if send_ratio <= 0.0 or send_ratio > 1.0:
 		return false
-	if send_fraction <= 0.0 or send_fraction > 1.0:
-		return false
-	for sid in source_ids:
-		if sid < 0 or sid == target_id:
-			return false
 	return true
+
+func to_dict() -> Dictionary:
+	return {
+		"command_id": command_id,
+		"owner_id": owner_id,
+		"source_ids": source_ids.duplicate(),
+		"target_id": target_id,
+		"send_ratio": send_ratio,
+		"issued_at_time": issued_at_time,
+	}

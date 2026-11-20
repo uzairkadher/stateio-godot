@@ -1,0 +1,81 @@
+{
+  "_metadata": {
+    "schema_version": 1,
+    "evidence_policy": "Parameters are explicitly tagged as VERIFIED (from research), IMPLEMENTATION (our design decision), or APPROXIMATION (tunable placeholder).",
+    "engine_target": "Godot 4.3+"
+  },
+  "simulation": {
+    "fixed_dt": 0.05,
+    "countdown_seconds": 0.5,
+    "_notes": "LEVEL_START_DELAY = 0.5s (VERIFIED); fixed_dt = 0.05s (20 Hz deterministic sim step, IMPLEMENTATION)."
+  },
+  "population": {
+    "base_spawn_rate_per_sec": 1.0,
+    "neutral_spawn_rate_per_sec": 0.0,
+    "default_soft_cap": 50,
+    "default_hard_cap": 999,
+    "block_population_seconds": 0.5,
+    "upgrade_spawn_bonus_per_level": 0.25,
+    "upgrade_cap_bonus_per_level": 15,
+    "max_upgrade_level": 5,
+    "_provenance": {
+      "block_population_seconds": "VERIFIED (Population.BLOCK_POPULATION_SECONDS = 0.5)",
+      "base_spawn_rate_per_sec": "IMPLEMENTATION (1.0/s owned, 0.0/s neutral)",
+      "default_soft_cap": "IMPLEMENTATION (50 soft cap)"
+    }
+  },
+  "troop_sending": {
+    "units_per_wave": 5,
+    "burst_wave_interval_seconds": 0.25,
+    "max_active_groups": 256,
+    "default_send_ratio": 1.0,
+    "partial_send_ratio": 0.5,
+    "min_send_amount": 1,
+    "leave_minimum_garrison": 0,
+    "_provenance": {
+      "units_per_wave": "VERIFIED (UNITS_PER_WAVE = 5)",
+      "burst_wave_interval_seconds": "VERIFIED (BURST_WAVES_LEN = 0.25)",
+      "max_active_groups": "VERIFIED (MAX_FIGHTERS_GROUPS_COUNT = 256)",
+      "partial_send_ratio": "VERIFIED (DEFAULT_MOVE_AMOUNT_PERCENT = 0.5)"
+    }
+  },
+  "movement": {
+    "base_speed_units_per_sec": 3.5,
+    "pixels_per_unit": 100.0,
+    "grid_cell_size_units": 0.5,
+    "arrival_radius_units": 0.45,
+    "rotation_speed": 10.0,
+    "distance_tolerance": 2.5,
+    "_provenance": {
+      "grid_cell_size_units": "VERIFIED (SquaredGrid._size = 0.5)",
+      "rotation_speed": "VERIFIED (ROTATION_SPEED = 10.0)",
+      "distance_tolerance": "VERIFIED (DISTANCE_TOLERANCE = 2.5)",
+      "base_speed_units_per_sec": "IMPLEMENTATION (3.5 u/s tunable)"
+    }
+  },
+  "combat": {
+    "mid_air_collision_radius_units": 0.28,
+    "mid_air_exchange_ratio": 1.0,
+    "attack_damage_multiplier": 1.0,
+    "defense_damage_multiplier": 1.0,
+    "capture_when_population_below_zero": true,
+    "tie_goes_to_defender": true,
+    "allow_mid_air_clashes": true,
+    "_provenance": {
+      "capture_when_population_below_zero": "IMPLEMENTATION (pop < 0 flips owner; tie_goes_to_defender at pop == 0)",
+      "mid_air_collision_radius_units": "IMPLEMENTATION (0.28u spatial-hash 1:1 cancel)"
+    }
+  },
+  "visual_and_mobile": {
+    "building_visual_radius_px": 38.0,
+    "building_touch_radius_px": 52.0,
+    "safe_area_margin_px": 48.0,
+    "shake_duration_sec": 0.1,
+    "shake_strength_px": 7.0,
+    "bump_scale_multiplier": 1.1,
+    "_provenance": {
+      "shake_duration_sec": "VERIFIED (BuildingShake._shakeDuration = 0.10)",
+      "bump_scale_multiplier": "VERIFIED (BuildingShake._bumpScaleMultiplier = 1.1)"
+    }
+  }
+}

@@ -1,0 +1,191 @@
+{
+  "schema_version": 1,
+  "map_id": "stage_04_cape_frontier",
+  "display_name": "Cape Frontier",
+  "stage_number": 4,
+  "description": "11-node fast-paced finale with hard shield citadel, turret, and propaganda hub.",
+  "default_difficulty": "hard",
+  "objective_type": "skirmish",
+  "bot_count": 3,
+  "pixels_per_unit": 100.0,
+  "grid_cell_size": 0.5,
+  "camera": {
+    "bounds": {
+      "min_x": -4.06,
+      "max_x": 4.06,
+      "min_y": -6.15,
+      "max_y": 6.15
+    },
+    "default_zoom": 1.0,
+    "min_zoom": 0.65,
+    "max_zoom": 1.85
+  },
+  "coordinate_source": "Original map normalized from Level_Africa Stage4 reference spacing (Y-inverted to Godot 2D).",
+  "buildings": [
+    {
+      "id": "b_01",
+      "name": "Outpost 1",
+      "position": {
+        "x": 1.295,
+        "y": -4.149
+      },
+      "owner_id": 2,
+      "initial_population": 20,
+      "population_cap": 60,
+      "spawn_rate": 1.0,
+      "building_type": "capital",
+      "upgrade_level": 1,
+      "mechanic_type": ""
+    },
+    {
+      "id": "b_02",
+      "name": "Outpost 2",
+      "position": {
+        "x": 0.903,
+        "y": -2.861
+      },
+      "owner_id": 0,
+      "initial_population": 10,
+      "population_cap": 50,
+      "spawn_rate": 1.0,
+      "building_type": "standard",
+      "upgrade_level": 1,
+      "mechanic_type": ""
+    },
+    {
+      "id": "b_03",
+      "name": "Outpost 3",
+      "position": {
+        "x": -0.565,
+        "y": -2.256
+      },
+      "owner_id": 0,
+      "initial_population": 12,
+      "population_cap": 50,
+      "spawn_rate": 1.0,
+      "building_type": "special",
+      "upgrade_level": 1,
+      "mechanic_type": "hard_shield"
+    },
+    {
+      "id": "b_04",
+      "name": "Outpost 4",
+      "position": {
+        "x": -2.062,
+        "y": -2.557
+      },
+      "owner_id": 0,
+      "initial_population": 14,
+      "population_cap": 50,
+      "spawn_rate": 1.0,
+      "building_type": "standard",
+      "upgrade_level": 1,
+      "mechanic_type": ""
+    },
+    {
+      "id": "b_05",
+      "name": "Outpost 5",
+      "position": {
+        "x": -2.044,
+        "y": -0.807
+      },
+      "owner_id": 3,
+      "initial_population": 20,
+      "population_cap": 60,
+      "spawn_rate": 1.0,
+      "building_type": "capital",
+      "upgrade_level": 1,
+      "mechanic_type": ""
+    },
+    {
+      "id": "b_06",
+      "name": "Outpost 6",
+      "position": {
+        "x": -0.326,
+        "y": 1.691
+      },
+      "owner_id": 0,
+      "initial_population": 8,
+      "population_cap": 50,
+      "spawn_rate": 1.0,
+      "building_type": "special",
+      "upgrade_level": 1,
+      "mechanic_type": "turret"
+    },
+    {
+      "id": "b_07",
+      "name": "Outpost 7",
+      "position": {
+        "x": 2.062,
+        "y": 2.474
+      },
+      "owner_id": 4,
+      "initial_population": 20,
+      "population_cap": 60,
+      "spawn_rate": 1.0,
+      "building_type": "capital",
+      "upgrade_level": 1,
+      "mechanic_type": ""
+    },
+    {
+      "id": "b_08",
+      "name": "Outpost 8",
+      "position": {
+        "x": -0.417,
+        "y": -4.087
+      },
+      "owner_id": 0,
+      "initial_population": 12,
+      "population_cap": 50,
+      "spawn_rate": 1.0,
+      "building_type": "special",
+      "upgrade_level": 1,
+      "mechanic_type": "propaganda"
+    },
+    {
+      "id": "b_09",
+      "name": "Outpost 9",
+      "position": {
+        "x": -0.806,
+        "y": 0.188
+      },
+      "owner_id": 0,
+      "initial_population": 14,
+      "population_cap": 50,
+      "spawn_rate": 1.0,
+      "building_type": "standard",
+      "upgrade_level": 1,
+      "mechanic_type": ""
+    },
+    {
+      "id": "b_10",
+      "name": "Outpost 10",
+      "position": {
+        "x": -1.071,
+        "y": 3.433
+      },
+      "owner_id": 1,
+      "initial_population": 20,
+      "population_cap": 60,
+      "spawn_rate": 1.0,
+      "building_type": "capital",
+      "upgrade_level": 1,
+      "mechanic_type": "speed_zone"
+    },
+    {
+      "id": "b_11",
+      "name": "Outpost 11",
+      "position": {
+        "x": 1.553,
+        "y": 4.149
+      },
+      "owner_id": 0,
+      "initial_population": 8,
+      "population_cap": 50,
+      "spawn_rate": 1.0,
+      "building_type": "standard",
+      "upgrade_level": 1,
+      "mechanic_type": ""
+    }
+  ]
+}

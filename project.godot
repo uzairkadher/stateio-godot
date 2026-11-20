@@ -1,24 +1,31 @@
 ; Engine configuration file.
-; Pinned target version: Godot 4.3.stable
+; Generated for Godot 4.3+ (Mobile / GL Compatibility renderer).
+; Phase A Independent Mobile Strategy Prototype — Frontier Command.
 
 config_version=5
 
 [application]
 
-config/name="Territory Capture (State.io-Style Recreation)"
-config/description="Independent Godot 4.3 territory-capture strategy game — Milestone 1 Scaffold"
+config/name="Frontier Command"
+config/description="Independent mobile-first territory capture strategy game (Godot 4.3+)"
+config/version="0.1.0-phase-a"
 run/main_scene="res://scenes/main.tscn"
 config/features=PackedStringArray("4.3", "GL Compatibility")
+config/icon="res://icon.svg"
 
 [display]
 
 window/size/viewport_width=1080
 window/size/viewport_height=2400
-window/size/window_width_override=450
-window/size/window_height_override=800
+window/size/window_width_override=540
+window/size/window_height_override=1200
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 window/handheld/orientation=1
+
+[input_devices]
+
+pointing/emulate_touch_from_mouse=true
 
 [rendering]
 

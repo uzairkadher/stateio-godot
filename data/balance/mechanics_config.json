@@ -1,0 +1,110 @@
+{
+  "_metadata": {
+    "schema_version": 1,
+    "note": "All 8 special mechanics are independently toggleable and configurable."
+  },
+  "mechanics": {
+    "shield": {
+      "enabled": true,
+      "shield_amount": 50.0,
+      "zone_radius_units": 1.75,
+      "duration_seconds": 0.0,
+      "cooldown_seconds": 12.0,
+      "stackable": false,
+      "work_for_neutrals": true,
+      "work_when_pop_zero": true,
+      "provenance": "VERIFIED (_shieldAmount=50, _zoneRadius=1.75); cooldown IMPLEMENTATION"
+    },
+    "hard_shield": {
+      "enabled": true,
+      "shield_amount": 100.0,
+      "zone_radius_units": 1.75,
+      "duration_seconds": 0.0,
+      "cooldown_seconds": 18.0,
+      "stackable": false,
+      "work_for_neutrals": true,
+      "work_when_pop_zero": true,
+      "provenance": "VERIFIED (_shieldAmount=100, _zoneRadius=1.75); cooldown IMPLEMENTATION"
+    },
+    "turret": {
+      "enabled": true,
+      "zone_radius_units": 2.0,
+      "shot_offset_units": 0.5,
+      "start_rotation_delay": 0.02,
+      "rotation_duration": 0.08,
+      "shooting_ray_duration": 0.05,
+      "end_shooting_delay": 0.1,
+      "damage_per_shot": 1,
+      "duration_seconds": 0.0,
+      "cooldown_seconds": 0.25,
+      "stackable": false,
+      "work_for_neutrals": true,
+      "work_when_pop_zero": true,
+      "provenance": "VERIFIED timings & radius (TurretBuildingConfig.json); damage_per_shot IMPLEMENTATION"
+    },
+    "speed_zone": {
+      "enabled": true,
+      "zone_radius_units": 1.0,
+      "impact_percentage": 50.0,
+      "duration_seconds": 0.0,
+      "cooldown_seconds": 0.0,
+      "stackable": true,
+      "max_stacks": 2,
+      "work_for_neutrals": true,
+      "work_when_pop_zero": true,
+      "provenance": "VERIFIED (_zoneImpactPercentage=+50.0, _zoneRadius=1.0)"
+    },
+    "slow_zone": {
+      "enabled": true,
+      "zone_radius_units": 1.0,
+      "impact_percentage": -50.0,
+      "duration_seconds": 0.0,
+      "cooldown_seconds": 0.0,
+      "stackable": true,
+      "max_stacks": 2,
+      "work_for_neutrals": true,
+      "work_when_pop_zero": true,
+      "provenance": "VERIFIED (_zoneImpactPercentage=-50.0, _zoneRadius=1.0)"
+    },
+    "propaganda": {
+      "enabled": true,
+      "zone_radius_units": 2.25,
+      "impact_percentage": 50.0,
+      "duration_seconds": 0.0,
+      "cooldown_seconds": 0.0,
+      "stackable": true,
+      "max_stacks": 2,
+      "work_for_neutrals": false,
+      "work_when_pop_zero": true,
+      "provenance": "VERIFIED (_zoneImpactPercentage=+50.0, _workWhenPopulationIsZero=1); target stat=spawn_rate INFERRED"
+    },
+    "additional_fighters": {
+      "enabled": true,
+      "bonus_fighters_amount": 50,
+      "trigger_on_capture": true,
+      "one_time_per_match": true,
+      "duration_seconds": 0.0,
+      "cooldown_seconds": 0.0,
+      "stackable": false,
+      "work_for_neutrals": false,
+      "work_when_pop_zero": true,
+      "provenance": "VERIFIED (_fightersAmount=50)"
+    },
+    "reinforcement": {
+      "enabled": true,
+      "fighters_limit": 20,
+      "occupy_duration_seconds": 5.0,
+      "out_radius_units": 3.0,
+      "max_requests_per_level": 1,
+      "advantage_percent": 1.4,
+      "disadvantage_percent_first": 0.2,
+      "disadvantage_percent_second": 0.5,
+      "duration_seconds": 5.0,
+      "cooldown_seconds": 25.0,
+      "stackable": false,
+      "work_for_neutrals": false,
+      "work_when_pop_zero": true,
+      "provenance": "VERIFIED (OCCUPY_DURATION=5.0, FIGHTERS_LIMIT=20, OUT_RADIUS=3.0, MAX_REQUESTS_PER_LEVEL=1)"
+    }
+  }
+}

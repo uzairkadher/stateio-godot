@@ -1,105 +1,82 @@
 class_name MatchState
 extends RefCounted
-## Pure headless simulation state container.
-## Holds all mutable match entities (buildings, troop groups, fighters).
-## Zero Godot Node, rendering, or UI dependencies.
+## Single source of truth for all runtime match state.
+## Mutations are strictly performed by single-authority simulation systems.
 
-const Enums = preload("res://src/core/enums.gd")
+var map_id: String = ""
+var map_display_name: String = ""
+var difficulty: String = "normal"
+var objective_type: int = GameEnums.ObjectiveType.SKIRMISH
+var phase: int = GameEnums.MatchPhase.MENU
+var outcome: int = GameEnums.MatchOutcome.NONE
+var winner_owner_id: int = GameEnums.OwnerId.NEUTRAL
 
-class BuildingState extends RefCounted:
-	var id: int = -1
-	var stage_id: String = ""
-	var position: Vector2 = Vector2.ZERO
-	var owner: int = Enums.FactionId.NEUTRAL
-	var population: int = 0
-	var fractional_population: float = 0.0
-	var fractional_damage: float = 0.0
-	var block_timer: float = 0.0
-	var production_lock_count: int = 0
-	var soft_cap: int = 50
-	var hard_cap_enabled: bool = false
-	var special_type: int = Enums.BuildingSpecialType.NONE
-	var shield_hp: int = 0
-	var is_active: bool = true
-
-	func to_dict() -> Dictionary:
-		return {
-			"id": id,
-			"stage_id": stage_id,
-			"position": position,
-			"owner": owner,
-			"population": population,
-			"soft_cap": soft_cap,
-			"special_type": special_type,
-			"shield_hp": shield_hp,
-			"is_active": is_active,
-		}
-
-class TroopGroup extends RefCounted:
-	var group_id: int = -1
-	var owner: int = Enums.FactionId.NEUTRAL
-	var source_id: int = -1
-	var target_id: int = -1
-	var remaining_to_spawn: int = 0
-	var burst_timer: float = 0.0
-	var active_fighter_count: int = 0
-
-class FighterUnit extends RefCounted:
-	var fighter_id: int = -1
-	var group_id: int = -1
-	var owner: int = Enums.FactionId.NEUTRAL
-	var target_id: int = -1
-	var amount: int = 1
-	var position: Vector2 = Vector2.ZERO
-	var rotation_rad: float = 0.0
-	var speed: float = 3.5
-	var collision_radius: float = 0.28
-	var path: PackedVector2Array = PackedVector2Array()
-	var waypoint_index: int = 0
-	var is_alive: bool = true
-
-	func to_dict() -> Dictionary:
-		return {
-			"fighter_id": fighter_id,
-			"group_id": group_id,
-			"owner": owner,
-			"target_id": target_id,
-			"amount": amount,
-			"position": position,
-			"rotation_rad": rotation_rad,
-			"speed": speed,
-			"is_alive": is_alive,
-		}
-
-var active_stage_id: String = ""
-var objective_type: int = Enums.ObjectiveType.SKIRMISH
-var tick_index: int = 0
 var elapsed_time: float = 0.0
+var countdown_remaining: float = 0.0
+var is_paused: bool = false
+var tick_count: int = 0
+
+var buildings: Dictionary = {}          # String building_id -> BuildingState
+var building_order: Array[String] = []  # Deterministic iteration order
+var troop_groups: Array = []            # Array of TroopGroupState
+var pending_waves: Array = []           # Queued burst wave dictionaries
+var mechanics: Dictionary = {}          # String mechanic_id -> SpecialMechanicState
+var mechanic_order: Array[String] = []  # Deterministic iteration order
+
 var next_group_id: int = 1
-var next_fighter_id: int = 1
-var buildings: Dictionary = {}   # int -> BuildingState
-var groups: Dictionary = {}      # int -> TroopGroup
-var fighters: Dictionary = {}    # int -> FighterUnit
+var processed_command_ids: Dictionary = {} # command_id -> true (duplicate protection)
+var reinforcement_requests_used: Dictionary = {} # owner_id -> int
 
-func add_building(building: BuildingState) -> void:
-	buildings[building.id] = building
+# Match telemetry
+var total_troops_sent: Dictionary = {}     # owner_id -> int
+var total_troops_lost: Dictionary = {}     # owner_id -> int
+var total_captures: Dictionary = {}        # owner_id -> int
+var active_factions: Array[int] = []
 
-func get_building(building_id: int) -> BuildingState:
+func reset() -> void:
+	phase = GameEnums.MatchPhase.MENU
+	outcome = GameEnums.MatchOutcome.NONE
+	winner_owner_id = GameEnums.OwnerId.NEUTRAL
+	elapsed_time = 0.0
+	countdown_remaining = 0.0
+	is_paused = false
+	tick_count = 0
+	buildings.clear()
+	building_order.clear()
+	troop_groups.clear()
+	pending_waves.clear()
+	mechanics.clear()
+	mechanic_order.clear()
+	next_group_id = 1
+	processed_command_ids.clear()
+	reinforcement_requests_used.clear()
+	total_troops_sent.clear()
+	total_troops_lost.clear()
+	total_captures.clear()
+	active_factions.clear()
+
+func get_building(building_id: String) -> BuildingState:
 	return buildings.get(building_id, null)
 
-func get_active_group_count() -> int:
-	return groups.size()
+func get_owner_building_count(owner_id: int) -> int:
+	var count: int = 0
+	for bid in building_order:
+		var b: BuildingState = buildings[bid]
+		if b.owner_id == owner_id:
+			count += 1
+	return count
 
-func get_active_fighter_count() -> int:
-	return fighters.size()
-
-func reset(stage_id: String = "", p_objective_type: int = Enums.ObjectiveType.SKIRMISH) -> void:
-	active_stage_id = stage_id
-	objective_type = p_objective_type
-	tick_index = 0
-	elapsed_time = 0.0
-	next_group_id = 1
-	next_fighter_id = 1
-	buildings.clear()
-	groups.clear()
-	fighters.clear()
+func get_owner_total_population(owner_id: int) -> int:
+	var total: int = 0
+	for bid in building_order:
+		var b: BuildingState = buildings[bid]
+		if b.owner_id == owner_id:
+			total += b.population
+	for g in troop_groups:
+		var grp: TroopGroupState = g
+		if not grp.is_eliminated and not grp.is_arrived and grp.owner_id == owner_id:
+			total += grp.amount
+	for w in pending_waves:
+		if int(w.get("owner_id", 0)) == owner_id:
+			total += int(w.get("remaining_amount", 0))
+	return total

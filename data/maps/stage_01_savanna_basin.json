@@ -1,0 +1,281 @@
+{
+  "schema_version": 1,
+  "map_id": "stage_01_savanna_basin",
+  "display_name": "Savanna Basin",
+  "stage_number": 1,
+  "description": "Original 17-node opener inspired by Stage 1 reference spacing. Balanced 1v2 skirmish.",
+  "default_difficulty": "easy",
+  "objective_type": "skirmish",
+  "bot_count": 2,
+  "pixels_per_unit": 100.0,
+  "grid_cell_size": 0.5,
+  "camera": {
+    "bounds": {
+      "min_x": -5.44,
+      "max_x": 5.44,
+      "min_y": -6.22,
+      "max_y": 6.22
+    },
+    "default_zoom": 1.0,
+    "min_zoom": 0.65,
+    "max_zoom": 1.85
+  },
+  "coordinate_source": "Original map normalized from Level_Africa Stage1 reference spacing (Y-inverted to Godot 2D).",
+  "buildings": [
+    {
+      "id": "b_01",
+      "name": "Outpost 1",
+      "position": {
+        "x": 1.886,
+        "y": -2.849
+      },
+      "owner_id": 0,
+      "initial_population": 8,
+      "population_cap": 50,
+      "spawn_rate": 1.0,
+      "building_type": "standard",
+      "upgrade_level": 1,
+      "mechanic_type": ""
+    },
+    {
+      "id": "b_02",
+      "name": "Outpost 2",
+      "position": {
+        "x": 3.441,
+        "y": -4.099
+      },
+      "owner_id": 2,
+      "initial_population": 20,
+      "population_cap": 60,
+      "spawn_rate": 1.0,
+      "building_type": "capital",
+      "upgrade_level": 1,
+      "mechanic_type": ""
+    },
+    {
+      "id": "b_03",
+      "name": "Outpost 3",
+      "position": {
+        "x": -2.081,
+        "y": -0.229
+      },
+      "owner_id": 0,
+      "initial_population": 12,
+      "population_cap": 50,
+      "spawn_rate": 1.0,
+      "building_type": "standard",
+      "upgrade_level": 1,
+      "mechanic_type": ""
+    },
+    {
+      "id": "b_04",
+      "name": "Outpost 4",
+      "position": {
+        "x": -3.441,
+        "y": -1.111
+      },
+      "owner_id": 3,
+      "initial_population": 20,
+      "population_cap": 60,
+      "spawn_rate": 1.0,
+      "building_type": "capital",
+      "upgrade_level": 1,
+      "mechanic_type": ""
+    },
+    {
+      "id": "b_05",
+      "name": "Outpost 5",
+      "position": {
+        "x": -1.264,
+        "y": -3.321
+      },
+      "owner_id": 0,
+      "initial_population": 16,
+      "population_cap": 50,
+      "spawn_rate": 1.0,
+      "building_type": "standard",
+      "upgrade_level": 1,
+      "mechanic_type": ""
+    },
+    {
+      "id": "b_06",
+      "name": "Outpost 6",
+      "position": {
+        "x": -1.219,
+        "y": 2.536
+      },
+      "owner_id": 0,
+      "initial_population": 8,
+      "population_cap": 50,
+      "spawn_rate": 1.0,
+      "building_type": "standard",
+      "upgrade_level": 1,
+      "mechanic_type": ""
+    },
+    {
+      "id": "b_07",
+      "name": "Outpost 7",
+      "position": {
+        "x": -1.05,
+        "y": 4.224
+      },
+      "owner_id": 1,
+      "initial_population": 20,
+      "population_cap": 60,
+      "spawn_rate": 1.0,
+      "building_type": "capital",
+      "upgrade_level": 1,
+      "mechanic_type": ""
+    },
+    {
+      "id": "b_08",
+      "name": "Outpost 8",
+      "position": {
+        "x": 0.754,
+        "y": 3.473
+      },
+      "owner_id": 0,
+      "initial_population": 12,
+      "population_cap": 50,
+      "spawn_rate": 1.0,
+      "building_type": "standard",
+      "upgrade_level": 1,
+      "mechanic_type": ""
+    },
+    {
+      "id": "b_09",
+      "name": "Outpost 9",
+      "position": {
+        "x": -2.034,
+        "y": 1.284
+      },
+      "owner_id": 0,
+      "initial_population": 14,
+      "population_cap": 50,
+      "spawn_rate": 1.0,
+      "building_type": "standard",
+      "upgrade_level": 1,
+      "mechanic_type": ""
+    },
+    {
+      "id": "b_10",
+      "name": "Outpost 10",
+      "position": {
+        "x": 3.026,
+        "y": -1.616
+      },
+      "owner_id": 0,
+      "initial_population": 16,
+      "population_cap": 50,
+      "spawn_rate": 1.0,
+      "building_type": "standard",
+      "upgrade_level": 1,
+      "mechanic_type": ""
+    },
+    {
+      "id": "b_11",
+      "name": "Outpost 11",
+      "position": {
+        "x": 1.981,
+        "y": -0.502
+      },
+      "owner_id": 0,
+      "initial_population": 8,
+      "population_cap": 50,
+      "spawn_rate": 1.0,
+      "building_type": "standard",
+      "upgrade_level": 1,
+      "mechanic_type": ""
+    },
+    {
+      "id": "b_12",
+      "name": "Outpost 12",
+      "position": {
+        "x": 0.343,
+        "y": -1.284
+      },
+      "owner_id": 0,
+      "initial_population": 10,
+      "population_cap": 50,
+      "spawn_rate": 1.0,
+      "building_type": "standard",
+      "upgrade_level": 1,
+      "mechanic_type": ""
+    },
+    {
+      "id": "b_13",
+      "name": "Outpost 13",
+      "position": {
+        "x": -0.891,
+        "y": -2.019
+      },
+      "owner_id": 0,
+      "initial_population": 12,
+      "population_cap": 50,
+      "spawn_rate": 1.0,
+      "building_type": "standard",
+      "upgrade_level": 1,
+      "mechanic_type": ""
+    },
+    {
+      "id": "b_14",
+      "name": "Outpost 14",
+      "position": {
+        "x": 1.454,
+        "y": -4.224
+      },
+      "owner_id": 0,
+      "initial_population": 14,
+      "population_cap": 50,
+      "spawn_rate": 1.0,
+      "building_type": "standard",
+      "upgrade_level": 1,
+      "mechanic_type": ""
+    },
+    {
+      "id": "b_15",
+      "name": "Outpost 15",
+      "position": {
+        "x": 0.225,
+        "y": 0.755
+      },
+      "owner_id": 0,
+      "initial_population": 16,
+      "population_cap": 50,
+      "spawn_rate": 1.0,
+      "building_type": "standard",
+      "upgrade_level": 1,
+      "mechanic_type": ""
+    },
+    {
+      "id": "b_16",
+      "name": "Outpost 16",
+      "position": {
+        "x": 3.161,
+        "y": 1.406
+      },
+      "owner_id": 0,
+      "initial_population": 8,
+      "population_cap": 50,
+      "spawn_rate": 1.0,
+      "building_type": "standard",
+      "upgrade_level": 1,
+      "mechanic_type": ""
+    },
+    {
+      "id": "b_17",
+      "name": "Outpost 17",
+      "position": {
+        "x": 2.806,
+        "y": 3.666
+      },
+      "owner_id": 0,
+      "initial_population": 10,
+      "population_cap": 50,
+      "spawn_rate": 1.0,
+      "building_type": "standard",
+      "upgrade_level": 1,
+      "mechanic_type": ""
+    }
+  ]
+}
